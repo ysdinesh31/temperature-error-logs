@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
 	"github.com/ysdinesh31/temperature-error-logs/internal/db"
 	"github.com/ysdinesh31/temperature-error-logs/internal/routes"
 )
@@ -18,12 +18,12 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// Setup routes
 	routes.SetupRoutes(r)
 
 	// Start server
-	logrus.Info("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", r); err != nil {
-		logrus.Fatalf("Failed to start server: %v", err)
+	log.Print("Starting server on :8080")
+	port := os.Getenv("PORT")
+	if err := http.ListenAndServe(":"+port, r); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
 	}
 }
